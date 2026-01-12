@@ -39,23 +39,31 @@ fn main() {
         if input.is_empty() {
             continue;
         }
+
         if input == "exit" {
             break;
         }
+
+        let parts = input.split_whitespace().collect::<Vec<&str>>();
+
+        if parts[0].to_uppercase() == "SET" {
+            if parts.len() != 3 {
+                println!("Comando com estrutura invalida. Tente novamente.");
+                continue;
+            } else {
+                db.set(String::from(parts[1]), String::from(parts[2]));
+            }
+        } else if parts[0].to_uppercase() == "GET" {
+            if parts.len() != 2 {
+                println!("Comando com estrutura invalida. Tente novamente.");
+                continue;
+            } else {
+                let rs = db.get(parts[1]);
+                match rs {
+                    Some(rs) => println!("{}", rs),
+                    None => println!("nao encontrado"),
+                }
+            }
+        }
     }
-
-    // db.set(String::from("nome"), String::from("Mauricio"));
-
-    // let nome = db.get("nome");
-    // let sobrenome = db.get("sobrenome");
-
-    // match nome {
-    //     Some(n) => println!("Hello, {}!", n),
-    //     None => println!("sem nomes"),
-    // }
-
-    // match sobrenome {
-    //     Some(s) => println!("Hello, {}!", s),
-    //     None => println!("sem sobrenomes"),
-    // }
 }
